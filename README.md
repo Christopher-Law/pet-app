@@ -39,7 +39,7 @@ That's it! The application will automatically:
 - **Repository Pattern** - Clean data access abstraction
 
 **Tech Stack:**
-- **Backend:** Laravel 11 with PHP 8.4
+- **Backend:** Laravel 12 with PHP 8.4
 - **Database:** SQLite with migrations
 - **Cache:** Redis
 - **Frontend:** Blade templates with TailwindCSS
