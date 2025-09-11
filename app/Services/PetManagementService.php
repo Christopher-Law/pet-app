@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Commands\CreatePetCommand;
+use App\DTOs\PetDTO;
 use App\Factories\PetFactory;
 use App\Models\Pet;
 use App\Repositories\Contracts\PetRepositoryInterface;
@@ -23,8 +24,13 @@ class PetManagementService
 
     public function createPet(array $petData): Pet
     {
+        return $this->createPetFromDTO(PetDTO::fromArray($petData));
+    }
+
+    public function createPetFromDTO(PetDTO $petDTO): Pet
+    {
         $command = new CreatePetCommand(
-            $petData,
+            $petDTO,
             $this->petRepository,
             $this->petFactory
         );

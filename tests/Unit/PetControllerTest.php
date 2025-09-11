@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PetController;
 use App\Http\Requests\StorePetRequest;
+use App\DTOs\PetDTO;
 use App\Models\Pet;
 use App\Services\PetManagementService;
 use Illuminate\Database\Eloquent\Collection;
@@ -69,9 +70,9 @@ describe('PetController', function () {
                 ->andReturn($validatedData);
 
             $this->petManagementService
-                ->shouldReceive('createPet')
+                ->shouldReceive('createPetFromDTO')
                 ->once()
-                ->with($validatedData)
+                ->with(Mockery::type(PetDTO::class))
                 ->andReturn($pet);
 
             $result = $this->controller->store($request);

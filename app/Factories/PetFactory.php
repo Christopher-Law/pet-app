@@ -2,36 +2,46 @@
 
 namespace App\Factories;
 
+use App\DTOs\PetDTO;
 use App\Models\Pet;
-use App\Enums\Breed;
 
 class PetFactory
 {
     public function createFromRequest(array $data): Pet
     {
-        $petData = $this->processPetData($data);
+        $petDTO = PetDTO::fromRequest($data);
+        $processedDTO = $this->processPetData($petDTO);
         
-        return Pet::make($petData);
+        return Pet::make($processedDTO->toModelArray());
     }
 
-    private function processPetData(array $data): array
+    public function createFromDTO(PetDTO $petDTO): Pet
     {
-        $processedData = $data;
+        $processedDTO = $this->processPetData($petDTO);
         
-        // Auto-detect dangerous animal status if not explicitly set
-        if (!isset($processedData['is_dangerous_animal']) && isset($data['breed'])) {
-            $breed = Breed::tryFrom($data['breed']);
-            $processedData['is_dangerous_animal'] = $breed ? $breed->isDangerous() : false;
+        return Pet::make($processedDTO->toModelArray());
+    }
+
+    private function processPetData(PetDTO $petDTO): PetDTO
+    {
+        // Only auto-detect if dangerous animal flag wasn't explicitly provided
+        if (!$petDTO->explicitlySetDangerous && $petDTO->hasBreed()) {
+            $isDangerous = $petDTO->breed->isDangerous();
+            if ($isDangerous) {
+                return $petDTO->withDangerousAnimal(true);
+            }
         }
 
-        // Ensure boolean type
-        $processedData['is_dangerous_animal'] = (bool) ($processedData['is_dangerous_animal'] ?? false);
-
-        return $processedData;
+        return $petDTO;
     }
 
     public function createMultiple(array $petsData): array
     {
         return array_map(fn($data) => $this->createFromRequest($data), $petsData);
+    }
+
+    public function createMultipleFromDTOs(array $petDTOs): array
+    {
+        return array_map(fn(PetDTO $dto) => $this->createFromDTO($dto), $petDTOs);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DTOs\PetDTO;
 use App\Http\Requests\StorePetRequest;
 use App\Models\Pet;
 use App\Services\PetManagementService;
@@ -37,7 +38,8 @@ class PetController extends Controller
      */
     public function store(StorePetRequest $request): RedirectResponse
     {
-        $pet = $this->petManagementService->createPet($request->validated());
+        $petDTO = PetDTO::fromRequest($request->validated());
+        $pet = $this->petManagementService->createPetFromDTO($petDTO);
 
         return redirect()->route('pets.show', $pet);
     }
