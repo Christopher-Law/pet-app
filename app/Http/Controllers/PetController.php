@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Factories\PetFactory;
 use App\Http\Requests\StorePetRequest;
 use App\Models\Pet;
 use App\Repositories\Contracts\PetRepositoryInterface;
@@ -11,7 +12,8 @@ use Illuminate\Http\RedirectResponse;
 class PetController extends Controller
 {
     public function __construct(
-        protected PetRepositoryInterface $petRepository
+        protected PetRepositoryInterface $petRepository,
+        protected PetFactory $petFactory
     ) {}
 
     /**
@@ -37,9 +39,10 @@ class PetController extends Controller
      */
     public function store(StorePetRequest $request): RedirectResponse
     {
-        $pet = $this->petRepository->create($request->validated());
+        $pet = $this->petFactory->createFromRequest($request->validated());
+        $savedPet = $this->petRepository->create($pet->toArray());
 
-        return redirect()->route('pets.show', $pet);
+        return redirect()->route('pets.show', $savedPet);
     }
 
     /**
