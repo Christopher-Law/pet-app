@@ -4,17 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePetRequest;
 use App\Models\Pet;
+use App\Repositories\Contracts\PetRepositoryInterface;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
 class PetController extends Controller
 {
+    public function __construct(
+        protected PetRepositoryInterface $petRepository
+    ) {}
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $pets = Pet::latest()->get();
+        $pets = $this->petRepository->getLatest();
+
         return view('pets.index', compact('pets'));
     }
 
@@ -31,7 +37,7 @@ class PetController extends Controller
      */
     public function store(StorePetRequest $request): RedirectResponse
     {
-       $pet =  Pet::create($request->validated());
+        $pet = $this->petRepository->create($request->validated());
 
         return redirect()->route('pets.show', $pet);
     }
