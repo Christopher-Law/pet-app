@@ -36,6 +36,74 @@ docker-compose up -d --build
 - **Redis**: Cache, sessions, and queues
 - **SQLite**: Database (file-based)
 
+### Design Patterns
+
+This application implements several professional design patterns to demonstrate clean, maintainable code:
+
+#### **Factory Pattern** 🏭
+**Location:** `app/Factories/PetFactory.php`  
+**Purpose:** Centralizes pet creation logic with business rules  
+**Benefits:** 
+- Handles dangerous breed detection automatically
+- Consistent pet creation across the application
+- Easy to extend with new creation rules
+
+```php
+// Usage
+$pet = $this->petFactory->createFromRequest($validatedData);
+```
+
+#### **Command Pattern** ⚡
+**Location:** `app/Commands/CreatePetCommand.php`, `app/Services/CommandInvoker.php`  
+**Purpose:** Encapsulates operations into objects for better control  
+**Benefits:**
+- Separates HTTP logic from business logic
+- Operations wrapped in database transactions
+- Easy to add undo functionality later
+
+```php
+// Usage
+$command = new CreatePetCommand($data, $repository, $factory);
+$pet = $this->commandInvoker->execute($command);
+```
+
+#### **Observer Pattern** 👁️
+**Location:** `app/Observers/PetObserver.php`, `app/Events/`  
+**Purpose:** Automatically triggers events when pets are created  
+**Benefits:**
+- Event-driven architecture
+- Automatic dangerous pet alerts
+- Easy to add notifications, logging, or integrations
+
+```php
+// Automatic events fired on pet creation
+#[ObservedBy(PetObserver::class)]
+class Pet extends Model
+```
+
+#### **Strategy Pattern** 🎯
+**Location:** `app/Strategies/Validation/`, `app/Services/ValidationStrategyResolver.php`  
+**Purpose:** Different validation rules based on pet type  
+**Benefits:**
+- Type-specific validation (dogs vs cats)
+- Easy to add new pet types
+- Follows Open/Closed Principle
+
+```php
+// Usage - automatically selects validation strategy
+$rules = $resolver->getValidationRules($petType);
+```
+
+#### **Repository Pattern** 📚
+**Location:** `app/Repositories/PetRepository.php`, `app/Repositories/Contracts/`  
+**Purpose:** Abstracts database operations  
+**Benefits:**
+- Clean separation of concerns
+- Easy to test with mocks
+- Database-agnostic code
+
+These patterns work together to create maintainable, testable, and professional code that follows SOLID principles.
+
 ## Development Commands
 
 ### Container Management
