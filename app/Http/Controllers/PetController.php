@@ -14,7 +14,8 @@ class PetController extends Controller
      */
     public function index()
     {
-        return view('pets.index');
+        $pets = Pet::latest()->get();
+        return view('pets.index', compact('pets'));
     }
 
     /**
