@@ -12,6 +12,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(\App\Factories\PetFactory::class);
+        $this->app->singleton(\App\Services\CommandInvoker::class);
     }
 
     /**
