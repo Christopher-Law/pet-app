@@ -2,13 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Pet;
-use App\Enums\Sex;
-use App\Enums\Type;
 use App\Rules\IsValidType;
 use App\Rules\IsValidSex;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Gate;
 
 class StorePetRequest extends FormRequest
 {
@@ -17,7 +13,11 @@ class StorePetRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('create', Pet::class);
+        // We can't actually use a Gate check here because we dont have a concept of auth users. 
+        // Normally we would do something like this:
+        // return Gate::allows('create', Pet::class);
+        
+        return true;
     }
 
     /**
@@ -29,12 +29,11 @@ class StorePetRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'type' => ['nullable', IsValidType::class],
+            'type' => ['nullable', new IsValidType()],
             'breed' => 'nullable|string|max:255',
             'date_of_birth' => 'nullable|date',
-            'sex' => ['nullable', IsValidSex::class],
+            'sex' => ['nullable', new IsValidSex()],
             'is_dangerous_animal' => 'required|boolean',
-            'owner_id' => 'required|exists:users,id',
         ];
     }
 }
