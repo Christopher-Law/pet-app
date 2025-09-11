@@ -42,15 +42,7 @@
                         
                         <div>
                             <label class="block text-sm font-medium text-gray-500">Breed</label>
-                            <p class="mt-1 text-lg text-gray-900">
-                                @if($pet->breed === 'dont_know')
-                                    I don't know
-                                @elseif($pet->breed === 'mixed')
-                                    Mixed breed
-                                @else
-                                    {{ $pet->breed ?? 'Not specified' }}
-                                @endif
-                            </p>
+                            <p class="mt-1 text-lg text-gray-900">{{ $pet->formatted_breed }}</p>
                         </div>
                         
                         <div>
