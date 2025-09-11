@@ -2,6 +2,10 @@
 
 A Laravel-based pet management application with Docker support.
 
+## Demo Notes
+
+> **⚠️ Important:** This is a demo application with no user authentication or ownership system. In a real-world application, each pet would belong to a specific user (with a `user_id` foreign key), but for demonstration purposes, all pets are stored without ownership associations.
+
 ## Prerequisites
 
 - Docker & Docker Compose
