@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: pet-app:dev
+    container_name: pet-app-php-dev
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+      - ./database/database.sqlite:/var/www/html/database/database.sqlite
+    env_file:
+      - .env.docker
+    environment:
+      - APP_KEY=base64:ysK+i4y06NCsjVfs/qTzI48QJwJE22bm6XI8cGFooGs=
+      - APP_ENV=local
+      - VITE_APP_URL=http://localhost:5173
+    depends_on:
+      - redis
+    networks:
+      - pet-app-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: pet-app-nginx-dev
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/nginx.dev.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+      - vite
+    networks:
+      - pet-app-network
+
+  vite:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: pet-app:dev
+    container_name: pet-app-vite-dev
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    env_file:
+      - .env.docker
+    environment:
+      - VITE_APP_URL=http://localhost:5173
+    ports:
+      - "5173:5173"
+    command: npm run dev:host
+    networks:
+      - pet-app-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: pet-app-redis-dev
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data_dev:/data
+    networks:
+      - pet-app-network
+
+volumes:
+  redis_data_dev:
+
+networks:
+  pet-app-network:
+    driver: bridge

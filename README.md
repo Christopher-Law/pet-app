@@ -6,6 +6,7 @@ A Laravel-based pet registration application demonstrating clean architecture an
 
 **Prerequisites:** Docker & Docker Compose
 
+### Production Mode (Built Assets)
 ```bash
 # 1. Clone and start the application
 git clone <repository-url> pet-app
@@ -16,10 +17,27 @@ docker-compose up -d --build
 open http://localhost:8000
 ```
 
-That's it! The application will automatically:
-- ✅ Set up the database and run migrations
-- ✅ Install dependencies and build assets
-- ✅ Start all services (Laravel, NGINX, Redis)
+### Development Mode (Live Asset Compilation)
+```bash
+# 1. Clone and start the application in development mode
+git clone <repository-url> pet-app
+cd pet-app
+docker-compose -f docker-compose.dev.yml up -d --build
+
+# 2. Access the application
+open http://localhost:8000
+```
+
+**Development mode includes:**
+- ✅ Live asset compilation with Vite dev server
+- ✅ Hot Module Replacement (HMR) for instant updates
+- ✅ No need to rebuild assets when making changes
+- ✅ Vite dev server accessible at http://localhost:5173
+
+**Production mode includes:**
+- ✅ Pre-built optimized assets
+- ✅ Faster startup time
+- ✅ Production-ready configuration
 
 ## 🎯 Features
 
@@ -58,6 +76,7 @@ docker-compose exec app php artisan test --testsuite=Feature
 
 ## 🔧 Development Commands
 
+### Production Mode
 ```bash
 # View logs
 docker-compose logs -f app
@@ -70,4 +89,25 @@ docker-compose exec app php artisan migrate:fresh --seed
 
 # Clear caches
 docker-compose exec app php artisan optimize:clear
+```
+
+### Development Mode
+```bash
+# View logs
+docker-compose -f docker-compose.dev.yml logs -f
+
+# Access PHP container
+docker-compose -f docker-compose.dev.yml exec app bash
+
+# Access Vite container
+docker-compose -f docker-compose.dev.yml exec vite bash
+
+# Reset database
+docker-compose -f docker-compose.dev.yml exec app php artisan migrate:fresh --seed
+
+# Clear caches
+docker-compose -f docker-compose.dev.yml exec app php artisan optimize:clear
+
+# Rebuild assets (if needed)
+docker-compose -f docker-compose.dev.yml exec vite npm run build
 ```

@@ -4,7 +4,9 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "dev:host": "vite --host 0.0.0.0",
+        "preview": "vite preview"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
