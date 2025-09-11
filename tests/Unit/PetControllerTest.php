@@ -4,6 +4,9 @@ use App\Http\Controllers\PetController;
 use App\Http\Requests\StorePetRequest;
 use App\Models\Pet;
 use App\Repositories\Contracts\PetRepositoryInterface;
+use App\Factories\PetFactory;
+use App\Services\CommandInvoker;
+use App\Commands\CreatePetCommand;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\View;
@@ -12,7 +15,13 @@ use Mockery\MockInterface;
 describe('PetController', function () {
     beforeEach(function () {
         $this->petRepository = $this->mock(PetRepositoryInterface::class);
-        $this->controller = new PetController($this->petRepository);
+        $this->petFactory = $this->mock(PetFactory::class);
+        $this->commandInvoker = $this->mock(CommandInvoker::class);
+        $this->controller = new PetController(
+            $this->petRepository, 
+            $this->petFactory, 
+            $this->commandInvoker
+        );
     });
 
     describe('index method', function () {
@@ -68,10 +77,10 @@ describe('PetController', function () {
                 ->once()
                 ->andReturn($validatedData);
 
-            $this->petRepository
-                ->shouldReceive('create')
+            $this->commandInvoker
+                ->shouldReceive('execute')
                 ->once()
-                ->with($validatedData)
+                ->with(Mockery::type(CreatePetCommand::class))
                 ->andReturn($pet);
 
             $result = $this->controller->store($request);

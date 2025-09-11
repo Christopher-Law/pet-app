@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use App\Enums\Breed;
+use App\Observers\PetObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+#[ObservedBy(PetObserver::class)]
 class Pet extends Model
 {
     use HasFactory;
