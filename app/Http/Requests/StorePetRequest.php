@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\IsValidType;
-use App\Rules\IsValidSex;
-use App\Rules\IsValidBreed;
+use App\Services\ValidationStrategyResolver;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StorePetRequest extends FormRequest
@@ -28,13 +26,16 @@ class StorePetRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'name' => 'required|string|max:255',
-            'type' => ['nullable', new IsValidType()],
-            'breed' => ['nullable', new IsValidBreed()],
-            'date_of_birth' => 'nullable|date',
-            'sex' => ['nullable', new IsValidSex()],
-            'is_dangerous_animal' => 'required|boolean',
-        ];
+        $resolver = app(ValidationStrategyResolver::class);
+        return $resolver->getValidationRules($this->input('type'));
+    }
+
+    /**
+     * Get custom messages for validation errors.
+     */
+    public function messages(): array
+    {
+        $resolver = app(ValidationStrategyResolver::class);
+        return $resolver->getValidationMessages($this->input('type'));
     }
 }
