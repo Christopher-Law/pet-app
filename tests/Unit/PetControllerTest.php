@@ -70,7 +70,7 @@ describe('PetController', function () {
                 ->andReturn($validatedData);
 
             $this->petManagementService
-                ->shouldReceive('createPetFromDTO')
+                ->shouldReceive('createPet')
                 ->once()
                 ->with(Mockery::type(PetDTO::class))
                 ->andReturn($pet);

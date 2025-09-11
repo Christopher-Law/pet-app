@@ -7,15 +7,7 @@ use App\Models\Pet;
 
 class PetFactory
 {
-    public function createFromRequest(array $data): Pet
-    {
-        $petDTO = PetDTO::fromRequest($data);
-        $processedDTO = $this->processPetData($petDTO);
-        
-        return Pet::make($processedDTO->toModelArray());
-    }
-
-    public function createFromDTO(PetDTO $petDTO): Pet
+    public function create(PetDTO $petDTO): Pet
     {
         $processedDTO = $this->processPetData($petDTO);
         
@@ -35,13 +27,14 @@ class PetFactory
         return $petDTO;
     }
 
-    public function createMultiple(array $petsData): array
+    public function createMultiple(array $petDTOs): array
     {
-        return array_map(fn($data) => $this->createFromRequest($data), $petsData);
+        return array_map(fn(PetDTO $dto) => $this->create($dto), $petDTOs);
     }
 
-    public function createMultipleFromDTOs(array $petDTOs): array
+    public function createFromRequest(array $data): Pet
     {
-        return array_map(fn(PetDTO $dto) => $this->createFromDTO($dto), $petDTOs);
+        $petDTO = PetDTO::fromRequest($data);
+        return $this->create($petDTO);
     }
 }

@@ -109,29 +109,29 @@ describe('PetFactory', function () {
     });
 
     describe('createMultiple method', function () {
-        it('creates multiple pets from array of data', function () {
-            $petsData = [
-                [
+        it('creates multiple pets from array of DTOs', function () {
+            $petDTOs = [
+                PetDTO::fromArray([
                     'name' => 'Pet One',
                     'type' => 'dog',
                     'breed' => 'Beagle',
                     'is_dangerous_animal' => false,
-                ],
-                [
+                ]),
+                PetDTO::fromArray([
                     'name' => 'Pet Two',
                     'type' => 'cat',
                     'breed' => 'Persian',
                     'is_dangerous_animal' => false,
-                ],
-                [
+                ]),
+                PetDTO::fromArray([
                     'name' => 'Dangerous Pet',
                     'type' => 'dog',
                     'breed' => 'Pitbull',
                     // Should auto-detect dangerous
-                ],
+                ]),
             ];
 
-            $pets = $this->factory->createMultiple($petsData);
+            $pets = $this->factory->createMultiple($petDTOs);
 
             expect($pets)->toHaveCount(3)
                 ->and($pets[0]->name)->toBe('Pet One')

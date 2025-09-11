@@ -6,6 +6,7 @@ use App\Factories\PetFactory;
 use App\Services\CommandInvoker;
 use App\Commands\CreatePetCommand;
 use App\Models\Pet;
+use App\DTOs\PetDTO;
 use Illuminate\Database\Eloquent\Collection;
 
 describe('PetManagementService', function () {
@@ -41,13 +42,13 @@ describe('PetManagementService', function () {
 
     describe('createPet method', function () {
         it('creates pet using command pattern', function () {
-            $petData = [
+            $petDTO = PetDTO::fromArray([
                 'name' => 'Test Pet',
                 'type' => 'dog',
                 'is_dangerous_animal' => false,
-            ];
+            ]);
             
-            $expectedPet = Pet::factory()->make($petData);
+            $expectedPet = Pet::factory()->make(['name' => 'Test Pet', 'type' => 'dog', 'is_dangerous_animal' => false]);
 
             $this->commandInvoker
                 ->shouldReceive('execute')
@@ -55,7 +56,7 @@ describe('PetManagementService', function () {
                 ->with(Mockery::type(CreatePetCommand::class))
                 ->andReturn($expectedPet);
 
-            $result = $this->service->createPet($petData);
+            $result = $this->service->createPet($petDTO);
 
             expect($result)->toBe($expectedPet);
         });

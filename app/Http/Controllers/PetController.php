@@ -39,7 +39,7 @@ class PetController extends Controller
     public function store(StorePetRequest $request): RedirectResponse
     {
         $petDTO = PetDTO::fromRequest($request->validated());
-        $pet = $this->petManagementService->createPetFromDTO($petDTO);
+        $pet = $this->petManagementService->createPet($petDTO);
 
         return redirect()->route('pets.show', $pet);
     }

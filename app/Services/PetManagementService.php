@@ -22,12 +22,7 @@ class PetManagementService
         return $this->petRepository->getLatest();
     }
 
-    public function createPet(array $petData): Pet
-    {
-        return $this->createPetFromDTO(PetDTO::fromArray($petData));
-    }
-
-    public function createPetFromDTO(PetDTO $petDTO): Pet
+    public function createPet(PetDTO $petDTO): Pet
     {
         $command = new CreatePetCommand(
             $petDTO,

@@ -11,22 +11,16 @@ use Illuminate\Support\Facades\DB;
 
 class CreatePetCommand implements CommandInterface
 {
-    private PetDTO $petDTO;
-
     public function __construct(
-        array|PetDTO $petData,
+        private PetDTO $petDTO,
         private PetRepositoryInterface $petRepository,
         private PetFactory $petFactory
-    ) {
-        $this->petDTO = $petData instanceof PetDTO 
-            ? $petData 
-            : PetDTO::fromArray($petData);
-    }
+    ) {}
 
     public function execute(): Pet
     {
         return DB::transaction(function () {
-            $pet = $this->petFactory->createFromDTO($this->petDTO);
+            $pet = $this->petFactory->create($this->petDTO);
             
             return $this->petRepository->create($pet->toArray());
         });
@@ -35,11 +29,5 @@ class CreatePetCommand implements CommandInterface
     public function getPetDTO(): PetDTO
     {
         return $this->petDTO;
-    }
-
-    // Backward compatibility
-    public function getPetData(): array
-    {
-        return $this->petDTO->toArray();
     }
 }
