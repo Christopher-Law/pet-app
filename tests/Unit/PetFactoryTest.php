@@ -1,5 +1,6 @@
 <?php
 
+use App\DTOs\PetDTO;
 use App\Factories\PetFactory;
 use App\Models\Pet;
 use App\Enums\Breed;

@@ -125,16 +125,16 @@
                     <input type="date" 
                            id="date_of_birth" 
                            name="date_of_birth"
-                           x-model="formData.dateOfBirth"
-                           :value="formData.dateOfBirth"
+                           value="{{ old('date_of_birth') }}"
                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
 
                 <!-- Hidden field for calculated birth date -->
-                <input type="hidden" 
-                       name="date_of_birth" 
-                       x-show="formData.knowsBirthDate === 'no'"
-                       :value="formData.calculatedBirthDate">
+                <template x-if="formData.knowsBirthDate === 'no'">
+                    <input type="hidden" 
+                           name="date_of_birth" 
+                           :value="formData.calculatedBirthDate">
+                </template>
 
                 @error('date_of_birth')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
