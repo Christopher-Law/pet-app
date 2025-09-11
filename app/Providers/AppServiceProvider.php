@@ -13,6 +13,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(\App\Factories\PetFactory::class);
         $this->app->singleton(\App\Services\CommandInvoker::class);
+        $this->app->bind(\App\Services\PetManagementService::class);
     }
 
     /**

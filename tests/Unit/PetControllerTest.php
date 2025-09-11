@@ -3,10 +3,7 @@
 use App\Http\Controllers\PetController;
 use App\Http\Requests\StorePetRequest;
 use App\Models\Pet;
-use App\Repositories\Contracts\PetRepositoryInterface;
-use App\Factories\PetFactory;
-use App\Services\CommandInvoker;
-use App\Commands\CreatePetCommand;
+use App\Services\PetManagementService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\View;
@@ -14,14 +11,8 @@ use Mockery\MockInterface;
 
 describe('PetController', function () {
     beforeEach(function () {
-        $this->petRepository = $this->mock(PetRepositoryInterface::class);
-        $this->petFactory = $this->mock(PetFactory::class);
-        $this->commandInvoker = $this->mock(CommandInvoker::class);
-        $this->controller = new PetController(
-            $this->petRepository, 
-            $this->petFactory, 
-            $this->commandInvoker
-        );
+        $this->petManagementService = $this->mock(PetManagementService::class);
+        $this->controller = new PetController($this->petManagementService);
     });
 
     describe('index method', function () {
@@ -31,8 +22,8 @@ describe('PetController', function () {
                 Pet::factory()->make(['name' => 'Max']),
             ]);
 
-            $this->petRepository
-                ->shouldReceive('getLatest')
+            $this->petManagementService
+                ->shouldReceive('getAllPets')
                 ->once()
                 ->andReturn($pets);
 
@@ -41,9 +32,9 @@ describe('PetController', function () {
             expect($result)->toBeInstanceOf(View::class);
         });
 
-        it('calls getLatest on repository', function () {
-            $this->petRepository
-                ->shouldReceive('getLatest')
+        it('calls getAllPets on service', function () {
+            $this->petManagementService
+                ->shouldReceive('getAllPets')
                 ->once()
                 ->andReturn(new Collection());
 
@@ -77,10 +68,10 @@ describe('PetController', function () {
                 ->once()
                 ->andReturn($validatedData);
 
-            $this->commandInvoker
-                ->shouldReceive('execute')
+            $this->petManagementService
+                ->shouldReceive('createPet')
                 ->once()
-                ->with(Mockery::type(CreatePetCommand::class))
+                ->with($validatedData)
                 ->andReturn($pet);
 
             $result = $this->controller->store($request);
