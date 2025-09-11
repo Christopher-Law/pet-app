@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Rules\IsValidType;
 use App\Rules\IsValidSex;
+use App\Rules\IsValidBreed;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StorePetRequest extends FormRequest
@@ -30,7 +31,7 @@ class StorePetRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'type' => ['nullable', new IsValidType()],
-            'breed' => 'nullable|string|max:255',
+            'breed' => ['nullable', new IsValidBreed()],
             'date_of_birth' => 'nullable|date',
             'sex' => ['nullable', new IsValidSex()],
             'is_dangerous_animal' => 'required|boolean',
