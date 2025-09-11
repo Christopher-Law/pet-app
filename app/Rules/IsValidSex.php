@@ -15,8 +15,10 @@ class IsValidSex implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (!in_array($value, Sex::cases())) {
-            $fail('The sex must be '.implode(', ', Sex::cases()));
+        $validValues = array_column(Sex::cases(), 'value');
+        
+        if (!in_array($value, $validValues)) {
+            $fail('The sex must be one of the following: '.implode(', ', $validValues));
         }
     }
 }

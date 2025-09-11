@@ -15,8 +15,10 @@ class IsValidType implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (!in_array($value, Type::cases())) {
-            $fail('The type must be '.implode(', ', Type::cases()));
+        $validValues = array_column(Type::cases(), 'value');
+        
+        if (!in_array($value, $validValues)) {
+            $fail('The type must be one of the following: '.implode(', ', $validValues));
         }
     }
 }
