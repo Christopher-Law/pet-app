@@ -2,13 +2,13 @@
 
 @section('content')
 <div class="max-w-6xl mx-auto px-4 py-8">
-    <div class="flex justify-between items-center mb-8">
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
         <div>
-            <h1 class="text-3xl font-bold text-gray-900">All Pets</h1>
-            <p class="text-gray-600">Manage pet profiles in the system</p>
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">All Pets</h1>
+            <p class="text-gray-600 text-sm sm:text-base">Manage pet profiles in the system</p>
         </div>
         <a href="{{ route('pets.create') }}" 
-           class="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200">
+           class="bg-blue-600 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
             Add New Pet
         </a>
     </div>
@@ -17,7 +17,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($pets as $pet)
                 <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-200">
-                    <div class="p-6">
+                    <div class="p-4 sm:p-6">
                         <div class="flex justify-between items-start mb-4">
                             <h3 class="text-xl font-semibold text-gray-900">{{ $pet->name }}</h3>
                             @if($pet->is_dangerous_animal)
@@ -30,7 +30,7 @@
                             @endif
                         </div>
                         
-                        <div class="space-y-2 text-sm text-gray-600">
+                        <div class="space-y-2 text-sm text-gray-700">
                             <div class="flex justify-between">
                                 <span>Type:</span>
                                 <span class="font-medium capitalize">{{ $pet->type }}</span>
@@ -54,10 +54,10 @@
                         </div>
                     </div>
                     
-                    <div class="bg-gray-50 px-6 py-3">
+                    <div class="bg-gray-50 px-4 py-3 sm:px-6">
                         <a href="{{ route('pets.show', $pet) }}" 
-                           class="text-blue-600 hover:text-blue-800 font-medium text-sm">
-                            View Details �
+                           class="text-blue-600 hover:text-blue-800 hover:underline font-medium text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded transition-colors duration-200">
+                            View Details →
                         </a>
                     </div>
                 </div>
@@ -69,10 +69,10 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
             <h3 class="mt-2 text-lg font-medium text-gray-900">No pets registered</h3>
-            <p class="mt-1 text-gray-500">Get started by registering the first pet.</p>
+            <p class="mt-1 text-gray-600">Get started by registering the first pet.</p>
             <div class="mt-6">
                 <a href="{{ route('pets.create') }}" 
-                   class="inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200">
+                   class="inline-flex items-center px-4 py-2 sm:px-6 sm:py-3 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
                     <svg class="-ml-1 mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
                     </svg>

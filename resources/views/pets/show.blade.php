@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-4xl mx-auto px-4 py-8">
+<div class="max-w-4xl mx-auto px-4 py-6 sm:py-8">
     <div class="bg-white rounded-lg shadow-lg overflow-hidden">
         <!-- Header with danger indicator -->
-        <div class="bg-gray-800 text-white p-6">
+        <div class="bg-gray-800 text-white p-4 sm:p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <h1 class="text-3xl font-bold">{{ $pet->name }}</h1>
+                    <h1 class="text-2xl sm:text-3xl font-bold">{{ $pet->name }}</h1>
                     <p class="text-gray-300">{{ ucfirst($pet->type) }} Profile</p>
                 </div>
                 @if($pet->is_dangerous_animal)
@@ -22,7 +22,7 @@
         </div>
 
         <!-- Pet Information -->
-        <div class="p-6">
+        <div class="p-4 sm:p-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 
                 <!-- Basic Information -->
@@ -110,7 +110,7 @@
             <!-- Registration Details -->
             <div class="mt-8 pt-6 border-t border-gray-200">
                 <h2 class="text-xl font-semibold text-gray-900 mb-4">Registration Details</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700">
                     <div>
                         <label class="block font-medium">Registration ID</label>
                         <p class="mt-1">{{ $pet->id }}</p>
@@ -123,9 +123,9 @@
             </div>
 
             <!-- Action Buttons -->
-            <div class="mt-8 flex flex-col sm:flex-row gap-4">
+            <div class="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <a href="{{ route('pets.index') }}" 
-                   class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 font-medium transition-colors duration-200">
+                   class="inline-flex items-center justify-center px-4 py-2 sm:px-6 sm:py-3 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 font-medium transition-colors duration-200">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                     </svg>
@@ -133,7 +133,7 @@
                 </a>
                 
                 <a href="{{ route('pets.create') }}" 
-                   class="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200">
+                   class="inline-flex items-center justify-center px-4 py-2 sm:px-6 sm:py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>

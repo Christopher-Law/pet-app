@@ -3,11 +3,11 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-2xl mx-auto px-4 py-8" x-data="petForm()">
-    <div class="bg-white rounded-lg shadow-lg p-6">
+<div class="max-w-2xl mx-auto px-4 py-6 sm:py-8" x-data="petForm()">
+    <div class="bg-white rounded-lg shadow-lg p-4 sm:p-6">
         <div class="mb-6">
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">Register Your Pet</h1>
-            <p class="text-gray-600">Tell us about your furry friend</p>
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Register Your Pet</h1>
+            <p class="text-gray-600 text-sm sm:text-base">Tell us about your furry friend</p>
         </div>
 
         <form action="{{ route('pets.store') }}" method="POST" class="space-y-6">
@@ -30,7 +30,7 @@
             <!-- Pet Type -->
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Pet Type *</label>
-                <div class="flex space-x-4">
+                <div class="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-4">
                     <label class="flex items-center">
                         <input type="radio" 
                                name="type" 
@@ -88,7 +88,7 @@
             <!-- Age Section -->
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Do you know their date of birth?</label>
-                <div class="flex space-x-4 mb-4">
+                <div class="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-4 mb-4">
                     <label class="flex items-center">
                         <input type="radio" 
                                value="no" 
@@ -144,7 +144,7 @@
             <!-- Sex -->
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Sex</label>
-                <div class="flex space-x-4">
+                <div class="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-4">
                     <label class="flex items-center">
                         <input type="radio" 
                                name="sex" 
@@ -173,7 +173,7 @@
             <!-- Submit Button -->
             <div class="pt-4">
                 <button type="submit" 
-                        class="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200">
+                        class="w-full bg-blue-600 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
                     Save Pet
                 </button>
             </div>
@@ -198,11 +198,11 @@ function petForm() {
         isDangerousAnimal: false,
 
         breeds: @json([
-            'dog' => Breed::getDogBreeds()->map(fn($breed) => $breed->value)->toArray(),
-            'cat' => Breed::getCatBreeds()->map(fn($breed) => $breed->value)->toArray()
+            'dog' => collect(Breed::getDogBreeds())->map(fn($breed) => $breed->value)->toArray(),
+            'cat' => collect(Breed::getCatBreeds())->map(fn($breed) => $breed->value)->toArray()
         ]),
 
-        dangerousBreeds: @json(Breed::getDangerousBreeds()->map(fn($breed) => $breed->value)->toArray()),
+        dangerousBreeds: @json(collect(Breed::getDangerousBreeds())->map(fn($breed) => $breed->value)->toArray()),
 
         getBreeds() {
             return this.formData.type ? this.breeds[this.formData.type] : [];
