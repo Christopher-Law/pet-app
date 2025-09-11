@@ -1,3 +1,5 @@
+@use('App\Enums\Breed')
+
 @extends('layouts.app')
 
 @section('content')
@@ -63,8 +65,8 @@
                     <template x-for="breed in getBreeds()" :key="breed">
                         <option :value="breed" x-text="breed"></option>
                     </template>
-                    <option value="dont_know">I don't know</option>
-                    <option value="mixed">It's a mix</option>
+                    <option value="{{ Breed::DONT_KNOW->value }}">{{ Breed::DONT_KNOW->getLabel() }}</option>
+                    <option value="{{ Breed::MIXED->value }}">{{ Breed::MIXED->getLabel() }}</option>
                 </select>
                 @error('breed')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -195,34 +197,12 @@ function petForm() {
         dangerWarningText: '',
         isDangerousAnimal: false,
 
-        breeds: {
-            dog: [
-                'Pitbull',
-                'Mastiff',
-                'German Shepherd',
-                'Golden Retriever',
-                'Labrador Retriever',
-                'Bulldog',
-                'Rottweiler',
-                'Beagle',
-                'Poodle',
-                'Siberian Husky'
-            ],
-            cat: [
-                'Persian',
-                'Maine Coon',
-                'British Shorthair',
-                'Ragdoll',
-                'Siamese',
-                'American Shorthair',
-                'Abyssinian',
-                'Russian Blue',
-                'Scottish Fold',
-                'Bengal'
-            ]
-        },
+        breeds: @json([
+            'dog' => Breed::getDogBreeds()->map(fn($breed) => $breed->value)->toArray(),
+            'cat' => Breed::getCatBreeds()->map(fn($breed) => $breed->value)->toArray()
+        ]),
 
-        dangerousBreeds: ['Pitbull', 'Mastiff'],
+        dangerousBreeds: @json(Breed::getDangerousBreeds()->map(fn($breed) => $breed->value)->toArray()),
 
         getBreeds() {
             return this.formData.type ? this.breeds[this.formData.type] : [];
