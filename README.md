@@ -1,233 +1,73 @@
-# Pet App
+# Pet Management App
 
-A Laravel-based pet management application with Docker support.
+A Laravel-based pet registration application demonstrating clean architecture and design patterns.
 
-## Demo Notes
+## 🚀 Quick Start
 
-> **⚠️ Important:** This is a demo application with no user authentication or ownership system. In a real-world application, each pet would belong to a specific user (with a `user_id` foreign key), but for demonstration purposes, all pets are stored without ownership associations.
+**Prerequisites:** Docker & Docker Compose
 
-## Prerequisites
-
-- Docker & Docker Compose
-- Git
-
-## Quick Start
-
-1. **Clone and setup:**
 ```bash
-git clone <repository-url>
+# 1. Clone and start the application
+git clone <repository-url> pet-app
 cd pet-app
-touch database/database.sqlite
-```
-
-2. **Build and start containers:**
-```bash
 docker-compose up -d --build
+
+# 2. Access the application
+open http://localhost:8000
 ```
 
-3. **Access the application:**
-   - **Application**: http://localhost:8000
-   - **Redis**: localhost:6379
+That's it! The application will automatically:
+- ✅ Set up the database and run migrations
+- ✅ Install dependencies and build assets
+- ✅ Start all services (Laravel, NGINX, Redis)
 
-## Architecture
+## 🎯 Features
 
-- **NGINX**: Web server and reverse proxy
-- **PHP-FPM**: Laravel application runtime
-- **Redis**: Cache, sessions, and queues
-- **SQLite**: Database (file-based)
+- **Pet Registration Form** with dynamic breed selection
+- **Dangerous Breed Detection** with visual indicators
+- **Age Calculation** and date of birth handling
+- **Responsive Design** with modern UI
+- **Event-Driven Architecture** with automatic alerts
 
-### Design Patterns
+## 🏗️ Architecture
 
-This application implements several professional design patterns to demonstrate clean, maintainable code:
+**Design Patterns Implemented:**
+- **Factory Pattern** - Pet creation with business rules
+- **Command Pattern** - Encapsulated operations with transactions
+- **Observer Pattern** - Event-driven pet creation alerts
+- **Strategy Pattern** - Type-specific validation rules
+- **Repository Pattern** - Clean data access abstraction
 
-#### **Factory Pattern** 🏭
-**Location:** `app/Factories/PetFactory.php`  
-**Purpose:** Centralizes pet creation logic with business rules  
-**Benefits:** 
-- Handles dangerous breed detection automatically
-- Consistent pet creation across the application
-- Easy to extend with new creation rules
+**Tech Stack:**
+- **Backend:** Laravel 11 with PHP 8.4
+- **Database:** SQLite with migrations
+- **Cache:** Redis
+- **Frontend:** Blade templates with TailwindCSS
+- **Container:** Docker with NGINX
 
-```php
-// Usage
-$pet = $this->petFactory->createFromRequest($validatedData);
-```
+## 🧪 Testing
 
-#### **Command Pattern** ⚡
-**Location:** `app/Commands/CreatePetCommand.php`, `app/Services/CommandInvoker.php`  
-**Purpose:** Encapsulates operations into objects for better control  
-**Benefits:**
-- Separates HTTP logic from business logic
-- Operations wrapped in database transactions
-- Easy to add undo functionality later
-
-```php
-// Usage
-$command = new CreatePetCommand($data, $repository, $factory);
-$pet = $this->commandInvoker->execute($command);
-```
-
-#### **Observer Pattern** 👁️
-**Location:** `app/Observers/PetObserver.php`, `app/Events/`  
-**Purpose:** Automatically triggers events when pets are created  
-**Benefits:**
-- Event-driven architecture
-- Automatic dangerous pet alerts
-- Easy to add notifications, logging, or integrations
-
-```php
-// Automatic events fired on pet creation
-#[ObservedBy(PetObserver::class)]
-class Pet extends Model
-```
-
-#### **Strategy Pattern** 🎯
-**Location:** `app/Strategies/Validation/`, `app/Services/ValidationStrategyResolver.php`  
-**Purpose:** Different validation rules based on pet type  
-**Benefits:**
-- Type-specific validation (dogs vs cats)
-- Easy to add new pet types
-- Follows Open/Closed Principle
-
-```php
-// Usage - automatically selects validation strategy
-$rules = $resolver->getValidationRules($petType);
-```
-
-#### **Repository Pattern** 📚
-**Location:** `app/Repositories/PetRepository.php`, `app/Repositories/Contracts/`  
-**Purpose:** Abstracts database operations  
-**Benefits:**
-- Clean separation of concerns
-- Easy to test with mocks
-- Database-agnostic code
-
-These patterns work together to create maintainable, testable, and professional code that follows SOLID principles.
-
-## Development Commands
-
-### Container Management
 ```bash
-# Start all services
-docker-compose up -d
+# Run all tests
+docker-compose exec app php artisan test
 
-# Stop all services
-docker-compose down
+# Run specific test suites
+docker-compose exec app php artisan test --testsuite=Unit
+docker-compose exec app php artisan test --testsuite=Feature
+```
 
-# Restart services
-docker-compose restart
+## 🔧 Development Commands
 
-# Rebuild and restart
-docker-compose down && docker-compose up -d --build
-
+```bash
 # View logs
-docker-compose logs -f app    # PHP-FPM logs
-docker-compose logs -f nginx  # NGINX logs
-docker-compose logs -f redis  # Redis logs
-```
+docker-compose logs -f app
 
-### Application Commands
-```bash
-# Access PHP container
+# Access container
 docker-compose exec app bash
 
-# Laravel Artisan commands
-docker-compose exec app php artisan migrate
-docker-compose exec app php artisan migrate:fresh
-docker-compose exec app php artisan tinker
-docker-compose exec app php artisan cache:clear
-docker-compose exec app php artisan config:cache
-docker-compose exec app php artisan route:list
-docker-compose exec app php artisan queue:work
-
-# Composer commands
-docker-compose exec app composer install
-docker-compose exec app composer update
-docker-compose exec app composer dump-autoload
-
-# Asset management
-docker-compose exec app npm install     # Install dependencies
-docker-compose exec app npm run build   # Build for production
-docker-compose exec app npm run dev     # Build for development
-```
-
-### Database Commands
-```bash
-# Run migrations
-docker-compose exec app php artisan migrate
-
 # Reset database
-docker-compose exec app php artisan migrate:fresh
-
-# Seed database
-docker-compose exec app php artisan db:seed
-
-# Fresh install with seeding
 docker-compose exec app php artisan migrate:fresh --seed
-```
 
-## Troubleshooting
-
-### Common Issues
-
-**502 Bad Gateway:**
-- Check if PHP-FPM is running: `docker-compose logs app`
-- Restart containers: `docker-compose restart`
-
-**Permission Issues:**
-```bash
-# Fix Laravel permissions
-docker-compose exec app chown -R www-data:www-data storage bootstrap/cache
-docker-compose exec app chmod -R 755 storage bootstrap/cache
-```
-
-**Clear All Caches:**
-```bash
+# Clear caches
 docker-compose exec app php artisan optimize:clear
 ```
-
-**Container Won't Start:**
-```bash
-# Check logs for errors
-docker-compose logs app
-docker-compose logs nginx
-docker-compose logs redis
-
-# Rebuild containers
-docker-compose down
-docker-compose up -d --build
-```
-
-## Project Structure
-
-```
-pet-app/
-├── docker/
-│   └── nginx/
-│       └── nginx.conf          # NGINX configuration
-├── docker-compose.yml          # Service definitions
-├── Dockerfile                  # PHP-FPM container
-├── docker-entrypoint.sh       # Container startup script
-├── .env.docker                # Docker environment variables
-├── .dockerignore               # Files excluded from build
-└── database/
-    └── database.sqlite         # SQLite database file
-```
-
-## Environment Configuration
-
-The application uses different environment files:
-- **`.env`**: Local development (outside Docker)
-- **`.env.docker`**: Docker container environment
-- **`docker-compose.yml`**: Overrides specific variables (like APP_KEY)
-
-## Production Notes
-
-This setup is production-ready with:
-- ✅ NGINX optimized for Laravel
-- ✅ Security headers configured
-- ✅ Asset compression (Gzip)
-- ✅ Long-term asset caching
-- ✅ Proper PHP-FPM configuration
-- ✅ Redis for high-performance caching
-- ✅ Optimized Docker builds
