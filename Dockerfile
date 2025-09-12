@@ -61,8 +61,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && npm run build \
     && rm -rf node_modules
 
-# Create SQLite database if it doesn't exist
-RUN touch /var/www/html/database/database.sqlite
+# Create database directory and SQLite database if it doesn't exist
+RUN mkdir -p /var/www/html/database && touch /var/www/html/database/database.sqlite
 
 # Copy Docker environment template
 COPY .env.docker .env
