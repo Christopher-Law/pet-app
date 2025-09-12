@@ -67,8 +67,9 @@ RUN chown -R www-data:www-data /var/www/html \
 # Create SQLite database if it doesn't exist
 RUN mkdir -p /var/www/html/database && touch /var/www/html/database/database.sqlite
 
-# Copy environment file
-COPY .env.example .env
+# Copy environment file - prefer .env.docker if available, fallback to .env.example
+COPY .env.docker* .env.example ./
+RUN if [ -f ".env.docker" ]; then cp .env.docker .env; else cp .env.example .env; fi
 
 # Generate application key
 RUN php artisan key:generate
