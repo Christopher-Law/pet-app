@@ -13,7 +13,6 @@ services:
       - ./:/var/www/html
       - /var/www/html/vendor
       - /var/www/html/node_modules
-      - ./database/database.sqlite:/var/www/html/database/database.sqlite
     environment:
       - APP_ENV=local
       - APP_DEBUG=true
