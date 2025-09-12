@@ -11,10 +11,13 @@ A Laravel-based pet registration application demonstrating clean architecture an
 git clone <repository-url> pet-app
 cd pet-app
 
-# 2. Start the development environment 
+# 2. Create environment file (REQUIRED)
+cp .env.example .env
+
+# 3. Start the development environment 
 docker-compose up -d --build
 
-# 3. Access the application
+# 4. Access the application
 open http://localhost:8000
 ```
 
@@ -117,6 +120,16 @@ docker-compose exec vite npm run build
 ## 🔧 Troubleshooting
 
 ### Common Issues
+
+**Missing `.env` File Error:**
+If you see errors like `file_get_contents(/var/www/html/.env): Failed to open stream: No such file or directory`:
+
+```bash
+# The .env file is required before starting Docker containers
+cp .env.example .env
+docker-compose down -v --remove-orphans
+docker-compose up -d --build
+```
 
 **`.env` Directory Error:**
 If you see errors like `grep: .env: Is a directory` or `file_get_contents(): Read of 8256 bytes failed with errno=21 Is a directory`:
