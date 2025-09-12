@@ -13,8 +13,7 @@ services:
       - app_public:/var/www/html/public
     env_file:
       - .env.docker
-    environment:
-      - APP_KEY=base64:ysK+i4y06NCsjVfs/qTzI48QJwJE22bm6XI8cGFooGs=
+    environment: []
     depends_on:
       - redis
     networks:

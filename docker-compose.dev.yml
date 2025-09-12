@@ -17,7 +17,6 @@ services:
     env_file:
       - .env.docker
     environment:
-      - APP_KEY=base64:ysK+i4y06NCsjVfs/qTzI48QJwJE22bm6XI8cGFooGs=
       - APP_ENV=local
       - VITE_APP_URL=http://localhost:5173
     depends_on:
