@@ -37,16 +37,22 @@ RUN pecl install redis && docker-php-ext-enable redis
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 
+# Copy composer files first for better caching
+COPY composer.json composer.lock /var/www/html/
+
+# Install PHP dependencies (this creates vendor directory)
+RUN composer install --no-dev --optimize-autoloader --no-scripts
+
 # Copy application files
 COPY . /var/www/html
+
+# Run composer scripts now that all files are present
+RUN composer dump-autoload --optimize
 
 # Set proper permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/storage \
     && chmod -R 755 /var/www/html/bootstrap/cache
-
-# Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader
 
 # Install Node.js dependencies and build assets
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
