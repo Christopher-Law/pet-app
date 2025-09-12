@@ -6,7 +6,6 @@ A Laravel-based pet registration application demonstrating clean architecture an
 
 **Prerequisites:** Docker & Docker Compose
 
-### Production Mode (Built Assets)
 ```bash
 # 1. Clone and start the application
 git clone <repository-url> pet-app
@@ -15,39 +14,21 @@ cd pet-app
 # 2. Set up environment file
 cp .env.example .env
 
-# 3. Start the application
+# 3. Start the development environment
 docker-compose up -d --build
 
 # 4. Access the application
 open http://localhost:8000
 ```
 
-### Development Mode (Live Asset Compilation)
-```bash
-# 1. Clone and start the application in development mode
-git clone <repository-url> pet-app
-cd pet-app
-
-# 2. Set up environment file
-cp .env.example .env
-
-# 3. Start the application (includes Vite dev server)
-docker-compose up -d --build
-
-# 4. Access the application
-open http://localhost:8000
-```
-
-**Development mode includes:**
+**Development environment includes:**
 - ✅ Live asset compilation with Vite dev server
 - ✅ Hot Module Replacement (HMR) for instant updates
 - ✅ No need to rebuild assets when making changes
 - ✅ Vite dev server accessible at http://localhost:5173
-
-**Production mode includes:**
-- ✅ Pre-built optimized assets
-- ✅ Faster startup time
-- ✅ Production-ready configuration
+- ✅ Redis for caching and sessions
+- ✅ SQLite database with automatic migrations
+- ✅ Nginx web server
 
 ## 🎯 Features
 
@@ -116,22 +97,6 @@ The project includes comprehensive GitHub Actions workflows for continuous integ
 
 ## 🔧 Development Commands
 
-### Production Mode
-```bash
-# View logs
-docker-compose logs -f app
-
-# Access container
-docker-compose exec app bash
-
-# Reset database
-docker-compose exec app php artisan migrate:fresh --seed
-
-# Clear caches
-docker-compose exec app php artisan optimize:clear
-```
-
-### Development Mode
 ```bash
 # View logs
 docker-compose logs -f
