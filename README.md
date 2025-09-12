@@ -102,7 +102,6 @@ The project includes comprehensive GitHub Actions workflows for continuous integ
 - **Docker Tests**: Runs on push/PR to `main` and `develop` branches
 
 #### 🔧 Additional CI/CD Features
-- **Dependabot**: Automated dependency updates for Composer, npm, and GitHub Actions
 - **Security Scanning**: Trivy vulnerability scanning for Docker images
 
 ## 🔧 Development Commands

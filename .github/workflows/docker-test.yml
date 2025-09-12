@@ -90,7 +90,7 @@ jobs:
         EOF
 
     - name: Start services
-      run: docker-compose -f docker-compose.test.yml up -d
+      run: docker compose -f docker-compose.test.yml up -d
 
     - name: Wait for services to be ready
       run: |
@@ -98,16 +98,25 @@ jobs:
         timeout 60 bash -c 'until curl -f http://localhost:8000; do sleep 2; done'
         
         # Wait for Redis to be ready
-        timeout 30 bash -c 'until docker-compose -f docker-compose.test.yml exec redis redis-cli ping; do sleep 2; done'
+        timeout 30 bash -c 'until docker compose -f docker-compose.test.yml exec redis redis-cli ping; do sleep 2; done'
 
-    - name: Run tests inside container
+    - name: Setup database and run tests
       run: |
+        # Create SQLite database
+        docker compose -f docker-compose.test.yml exec app touch /var/www/html/database/database.sqlite
+        
+        # Run database migrations
+        docker compose -f docker-compose.test.yml exec app php artisan migrate --force
+        
+        # Run database seeders
+        docker compose -f docker-compose.test.yml exec app php artisan db:seed --force
+        
         # Run all tests
-        docker-compose -f docker-compose.test.yml exec app php artisan test
+        docker compose -f docker-compose.test.yml exec app php artisan test
         
         # Run specific test suites
-        docker-compose -f docker-compose.test.yml exec app php artisan test --testsuite=Unit
-        docker-compose -f docker-compose.test.yml exec app php artisan test --testsuite=Feature
+        docker compose -f docker-compose.test.yml exec app php artisan test --testsuite=Unit
+        docker compose -f docker-compose.test.yml exec app php artisan test --testsuite=Feature
 
     - name: Test application endpoints
       run: |
@@ -119,12 +128,12 @@ jobs:
 
     - name: Check application logs
       run: |
-        docker-compose -f docker-compose.test.yml logs app
-        docker-compose -f docker-compose.test.yml logs nginx
+        docker compose -f docker-compose.test.yml logs app
+        docker compose -f docker-compose.test.yml logs nginx
 
     - name: Clean up
       if: always()
-      run: docker-compose -f docker-compose.test.yml down -v
+      run: docker compose -f docker-compose.test.yml down -v
 
   docker-security-scan:
     runs-on: ubuntu-latest

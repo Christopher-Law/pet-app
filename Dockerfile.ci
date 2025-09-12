@@ -57,20 +57,11 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && npm run build \
     && rm -rf node_modules
 
-# Create SQLite database for testing
-RUN touch /var/www/html/database/database.sqlite
-
 # Copy environment file for testing
 COPY .env.example .env
 
 # Generate application key
 RUN php artisan key:generate
-
-# Run database migrations
-RUN php artisan migrate --force
-
-# Run database seeders
-RUN php artisan db:seed --force
 
 # Expose port 9000 for PHP-FPM
 EXPOSE 9000
