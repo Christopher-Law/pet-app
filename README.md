@@ -31,8 +31,8 @@ cd pet-app
 # 2. Set up environment file
 cp .env.example .env
 
-# 3. Start the application
-docker-compose -f docker-compose.dev.yml up -d --build
+# 3. Start the application (includes Vite dev server)
+docker-compose up -d --build
 
 # 4. Access the application
 open http://localhost:8000
@@ -134,20 +134,43 @@ docker-compose exec app php artisan optimize:clear
 ### Development Mode
 ```bash
 # View logs
-docker-compose -f docker-compose.dev.yml logs -f
+docker-compose logs -f
 
 # Access PHP container
-docker-compose -f docker-compose.dev.yml exec app bash
+docker-compose exec app bash
 
 # Access Vite container
-docker-compose -f docker-compose.dev.yml exec vite bash
+docker-compose exec vite bash
 
 # Reset database
-docker-compose -f docker-compose.dev.yml exec app php artisan migrate:fresh --seed
+docker-compose exec app php artisan migrate:fresh --seed
 
 # Clear caches
-docker-compose -f docker-compose.dev.yml exec app php artisan optimize:clear
+docker-compose exec app php artisan optimize:clear
 
 # Rebuild assets (if needed)
-docker-compose -f docker-compose.dev.yml exec vite npm run build
+docker-compose exec vite npm run build
+```
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+**`.env` Directory Error:**
+If you see errors like `grep: .env: Is a directory` or `file_get_contents(): Read of 8256 bytes failed with errno=21 Is a directory`:
+
+```bash
+# Clean up and start fresh
+docker-compose down -v --remove-orphans
+cp .env.example .env
+docker-compose up -d --build
+```
+
+**Application Key Issues:**
+If you see `Unsupported cipher or incorrect key length` errors:
+
+```bash
+# The APP_KEY will be automatically generated on first run
+# If issues persist, check that .env file exists and is not a directory
+ls -la .env  # Should show a file, not a directory
 ```
