@@ -1,14 +1,13 @@
 <?php
 
+use App\DTOs\PetDTO;
 use App\Http\Controllers\PetController;
 use App\Http\Requests\StorePetRequest;
-use App\DTOs\PetDTO;
 use App\Models\Pet;
 use App\Services\PetManagementService;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Contracts\View\View;
-use Mockery\MockInterface;
 
 describe('PetController', function () {
     beforeEach(function () {
@@ -37,7 +36,7 @@ describe('PetController', function () {
             $this->petManagementService
                 ->shouldReceive('getAllPets')
                 ->once()
-                ->andReturn(new Collection());
+                ->andReturn(new Collection);
 
             $this->controller->index();
         });

@@ -12,10 +12,10 @@ class StorePetRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // We can't actually use a Gate check here because we dont have a concept of auth users. 
+        // We can't actually use a Gate check here because we dont have a concept of auth users.
         // Normally we would do something like this:
         // return Gate::allows('create', Pet::class);
-        
+
         return true;
     }
 
@@ -27,6 +27,7 @@ class StorePetRequest extends FormRequest
     public function rules(): array
     {
         $resolver = app(ValidationStrategyResolver::class);
+
         return $resolver->getValidationRules($this->input('type'));
     }
 
@@ -36,6 +37,7 @@ class StorePetRequest extends FormRequest
     public function messages(): array
     {
         $resolver = app(ValidationStrategyResolver::class);
+
         return $resolver->getValidationMessages($this->input('type'));
     }
 }

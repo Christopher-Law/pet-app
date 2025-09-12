@@ -21,7 +21,7 @@ class CreatePetCommand implements CommandInterface
     {
         return DB::transaction(function () {
             $pet = $this->petFactory->create($this->petDTO);
-            
+
             return $this->petRepository->create($pet->toArray());
         });
     }

@@ -12,10 +12,10 @@ class DefaultValidationStrategy implements PetValidationStrategy
     {
         return [
             'name' => 'required|string|max:255',
-            'type' => ['nullable', new IsValidType()], // Type is optional for default strategy
-            'breed' => ['nullable', new IsValidBreed()],
+            'type' => ['nullable', new IsValidType], // Type is optional for default strategy
+            'breed' => ['nullable', new IsValidBreed],
             'date_of_birth' => 'nullable|date|before:today',
-            'sex' => ['nullable', new IsValidSex()],
+            'sex' => ['nullable', new IsValidSex],
             'is_dangerous_animal' => 'required|boolean',
         ];
     }

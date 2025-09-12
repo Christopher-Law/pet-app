@@ -51,7 +51,7 @@ describe('Pet Management', function () {
             $response = $this->withoutMiddleware()->post('/pets', $petData);
 
             $response->assertStatus(302);
-            
+
             $pet = Pet::where('name', 'Buddy')->first();
             expect($pet)->not->toBeNull()
                 ->and($pet->name)->toBe('Buddy')
@@ -112,7 +112,7 @@ describe('Pet Management', function () {
             $response = $this->withoutMiddleware()->post('/pets', $petData);
 
             $response->assertStatus(302);
-            
+
             $pet = Pet::where('name', 'Fluffy')->first();
             expect($pet)->not->toBeNull()
                 ->and($pet->type)->toBe('cat')
@@ -129,7 +129,7 @@ describe('Pet Management', function () {
             $response = $this->withoutMiddleware()->post('/pets', $petData);
 
             $response->assertStatus(302);
-            
+
             $pet = Pet::where('name', 'Simple Pet')->first();
             expect($pet)->not->toBeNull()
                 ->and($pet->type)->toBeNull()
@@ -178,7 +178,7 @@ describe('Pet Management', function () {
             $response = $this->withoutMiddleware()->post('/pets', $petData);
 
             $response->assertStatus(302);
-            
+
             $pet = Pet::where('name', 'Dangerous Pet')->first();
             expect($pet)->not->toBeNull()
                 ->and($pet->is_dangerous_animal)->toBeTrue()

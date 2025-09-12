@@ -1,12 +1,12 @@
 <?php
 
-use App\Services\PetManagementService;
-use App\Repositories\Contracts\PetRepositoryInterface;
-use App\Factories\PetFactory;
-use App\Services\CommandInvoker;
 use App\Commands\CreatePetCommand;
-use App\Models\Pet;
 use App\DTOs\PetDTO;
+use App\Factories\PetFactory;
+use App\Models\Pet;
+use App\Repositories\Contracts\PetRepositoryInterface;
+use App\Services\CommandInvoker;
+use App\Services\PetManagementService;
 use Illuminate\Database\Eloquent\Collection;
 
 describe('PetManagementService', function () {
@@ -14,7 +14,7 @@ describe('PetManagementService', function () {
         $this->petRepository = $this->mock(PetRepositoryInterface::class);
         $this->petFactory = $this->mock(PetFactory::class);
         $this->commandInvoker = $this->mock(CommandInvoker::class);
-        
+
         $this->service = new PetManagementService(
             $this->petRepository,
             $this->petFactory,
@@ -47,7 +47,7 @@ describe('PetManagementService', function () {
                 'type' => 'dog',
                 'is_dangerous_animal' => false,
             ]);
-            
+
             $expectedPet = Pet::factory()->make(['name' => 'Test Pet', 'type' => 'dog', 'is_dangerous_animal' => false]);
 
             $this->commandInvoker

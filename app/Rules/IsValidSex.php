@@ -2,9 +2,9 @@
 
 namespace App\Rules;
 
+use App\Enums\Sex;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
-use App\Enums\Sex;
 
 class IsValidSex implements ValidationRule
 {
@@ -16,8 +16,8 @@ class IsValidSex implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $validValues = array_column(Sex::cases(), 'value');
-        
-        if (!in_array($value, $validValues)) {
+
+        if (! in_array($value, $validValues)) {
             $fail('The sex must be one of the following: '.implode(', ', $validValues));
         }
     }

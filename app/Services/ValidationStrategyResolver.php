@@ -2,27 +2,27 @@
 
 namespace App\Services;
 
-use App\Strategies\Validation\PetValidationStrategy;
-use App\Strategies\Validation\DogValidationStrategy;
+use App\Enums\Type;
 use App\Strategies\Validation\CatValidationStrategy;
 use App\Strategies\Validation\DefaultValidationStrategy;
-use App\Enums\Type;
+use App\Strategies\Validation\DogValidationStrategy;
+use App\Strategies\Validation\PetValidationStrategy;
 
 class ValidationStrategyResolver
 {
     public function resolve(?string $petType): PetValidationStrategy
     {
-        if (!$petType) {
+        if (! $petType) {
             // Use default strategy when no type specified
-            return new DefaultValidationStrategy();
+            return new DefaultValidationStrategy;
         }
 
         $type = Type::tryFrom($petType);
-        
-        return match($type) {
-            Type::DOG => new DogValidationStrategy(),
-            Type::CAT => new CatValidationStrategy(),
-            null => new DefaultValidationStrategy(), // Fallback to default strategy
+
+        return match ($type) {
+            Type::DOG => new DogValidationStrategy,
+            Type::CAT => new CatValidationStrategy,
+            null => new DefaultValidationStrategy, // Fallback to default strategy
         };
     }
 

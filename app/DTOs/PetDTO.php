@@ -3,8 +3,8 @@
 namespace App\DTOs;
 
 use App\Enums\Breed;
-use App\Enums\Type;
 use App\Enums\Sex;
+use App\Enums\Type;
 use Carbon\Carbon;
 
 class PetDTO
@@ -26,8 +26,8 @@ class PetDTO
             name: $data['name'],
             type: isset($data['type']) ? Type::tryFrom($data['type']) : null,
             breed: isset($data['breed']) ? Breed::tryFrom($data['breed']) : null,
-            dateOfBirth: isset($data['date_of_birth']) ? 
-                (is_string($data['date_of_birth']) ? Carbon::parse($data['date_of_birth']) : $data['date_of_birth']) 
+            dateOfBirth: isset($data['date_of_birth']) ?
+                (is_string($data['date_of_birth']) ? Carbon::parse($data['date_of_birth']) : $data['date_of_birth'])
                 : null,
             sex: isset($data['sex']) ? Sex::tryFrom($data['sex']) : null,
             isDangerousAnimal: (bool) ($data['is_dangerous_animal'] ?? false),
@@ -35,7 +35,7 @@ class PetDTO
 
         // Track if dangerous animal flag was explicitly provided
         $dto->explicitlySetDangerous = array_key_exists('is_dangerous_animal', $data);
-        
+
         return $dto;
     }
 
@@ -58,7 +58,7 @@ class PetDTO
 
     public function toModelArray(): array
     {
-        return array_filter($this->toArray(), fn($value) => $value !== null);
+        return array_filter($this->toArray(), fn ($value) => $value !== null);
     }
 
     public function withDangerousAnimal(bool $isDangerous): self
@@ -71,9 +71,9 @@ class PetDTO
             sex: $this->sex,
             isDangerousAnimal: $isDangerous,
         );
-        
+
         $newDto->explicitlySetDangerous = true; // Mark as explicitly set when modified
-        
+
         return $newDto;
     }
 

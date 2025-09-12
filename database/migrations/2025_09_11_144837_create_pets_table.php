@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('breed')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->string('sex')->nullable();
-            $table->boolean("is_dangerous_animal")->default(false);
+            $table->boolean('is_dangerous_animal')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

@@ -15,8 +15,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Pet extends Model
 {
     use HasFactory;
-    use HasUlids;
     use HasTimestamps;
+    use HasUlids;
     use SoftDeletes;
 
     protected $fillable = [
@@ -47,7 +47,7 @@ class Pet extends Model
      */
     public function getAgeAttribute(): ?string
     {
-        if (!$this->date_of_birth) {
+        if (! $this->date_of_birth) {
             return null;
         }
 
@@ -55,15 +55,15 @@ class Pet extends Model
         $months = $this->date_of_birth->diffInMonths(now()) % 12;
 
         if ($age > 0) {
-            $ageString = $age . ' ' . ($age === 1 ? 'year' : 'years');
+            $ageString = $age.' '.($age === 1 ? 'year' : 'years');
             if ($months > 0) {
-                $ageString .= ' and ' . $months . ' ' . ($months === 1 ? 'month' : 'months');
+                $ageString .= ' and '.$months.' '.($months === 1 ? 'month' : 'months');
             }
         } else {
-            $ageString = $months . ' ' . ($months === 1 ? 'month' : 'months');
+            $ageString = $months.' '.($months === 1 ? 'month' : 'months');
         }
 
-        return $ageString . ' old';
+        return $ageString.' old';
     }
 
     /**
@@ -71,7 +71,7 @@ class Pet extends Model
      */
     public function getFormattedBreedAttribute(): string
     {
-        if (!$this->breed) {
+        if (! $this->breed) {
             return 'Not specified';
         }
 

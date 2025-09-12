@@ -29,7 +29,7 @@ enum Breed: string
 
     public function getLabel(): string
     {
-        return match($this) {
+        return match ($this) {
             self::DONT_KNOW => "I don't know",
             self::MIXED => 'Mixed breed',
             default => $this->value

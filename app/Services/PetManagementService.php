@@ -58,9 +58,9 @@ class PetManagementService
             'dangerous_pets' => $dangerousPets->count(),
             'dogs' => $this->getPetsByType('dog')->count(),
             'cats' => $this->getPetsByType('cat')->count(),
-            'dangerous_percentage' => $allPets->count() > 0 
+            'dangerous_percentage' => $allPets->count() > 0
                 ? round(($dangerousPets->count() / $allPets->count()) * 100, 1)
-                : 0
+                : 0,
         ];
     }
 }

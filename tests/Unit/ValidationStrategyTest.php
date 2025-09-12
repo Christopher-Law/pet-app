@@ -1,13 +1,13 @@
 <?php
 
 use App\Services\ValidationStrategyResolver;
-use App\Strategies\Validation\DogValidationStrategy;
 use App\Strategies\Validation\CatValidationStrategy;
 use App\Strategies\Validation\DefaultValidationStrategy;
+use App\Strategies\Validation\DogValidationStrategy;
 
 describe('ValidationStrategy', function () {
     beforeEach(function () {
-        $this->resolver = new ValidationStrategyResolver();
+        $this->resolver = new ValidationStrategyResolver;
     });
 
     describe('ValidationStrategyResolver', function () {
@@ -64,7 +64,7 @@ describe('ValidationStrategy', function () {
 
     describe('DogValidationStrategy', function () {
         beforeEach(function () {
-            $this->strategy = new DogValidationStrategy();
+            $this->strategy = new DogValidationStrategy;
         });
 
         it('requires dog type specifically', function () {
@@ -79,11 +79,11 @@ describe('ValidationStrategy', function () {
 
             expect($rules)->toHaveKeys([
                 'name',
-                'type', 
+                'type',
                 'breed',
                 'date_of_birth',
                 'sex',
-                'is_dangerous_animal'
+                'is_dangerous_animal',
             ]);
         });
 
@@ -98,7 +98,7 @@ describe('ValidationStrategy', function () {
 
     describe('CatValidationStrategy', function () {
         beforeEach(function () {
-            $this->strategy = new CatValidationStrategy();
+            $this->strategy = new CatValidationStrategy;
         });
 
         it('requires cat type specifically', function () {
@@ -109,7 +109,7 @@ describe('ValidationStrategy', function () {
         });
 
         it('has same field structure as dog strategy', function () {
-            $dogStrategy = new DogValidationStrategy();
+            $dogStrategy = new DogValidationStrategy;
             $catRules = $this->strategy->getRules();
             $dogRules = $dogStrategy->getRules();
 
@@ -128,7 +128,7 @@ describe('ValidationStrategy', function () {
 
     describe('DefaultValidationStrategy', function () {
         beforeEach(function () {
-            $this->strategy = new DefaultValidationStrategy();
+            $this->strategy = new DefaultValidationStrategy;
         });
 
         it('makes type field nullable', function () {
@@ -150,15 +150,15 @@ describe('ValidationStrategy', function () {
             expect($rules)->toHaveKeys([
                 'name',
                 'type',
-                'breed', 
+                'breed',
                 'date_of_birth',
                 'sex',
-                'is_dangerous_animal'
+                'is_dangerous_animal',
             ]);
 
             // Most fields should be nullable except name and is_dangerous_animal
             expect($rules['breed'])->toContain('nullable')
-                ->and($rules['date_of_birth'])->toContain('nullable') 
+                ->and($rules['date_of_birth'])->toContain('nullable')
                 ->and($rules['sex'])->toContain('nullable');
         });
 

@@ -12,9 +12,9 @@ class DogValidationStrategy implements PetValidationStrategy
         return [
             'name' => 'required|string|max:255',
             'type' => 'required|in:dog',
-            'breed' => ['nullable', new IsValidBreed()],
+            'breed' => ['nullable', new IsValidBreed],
             'date_of_birth' => 'nullable|date|before:today',
-            'sex' => ['nullable', new IsValidSex()],
+            'sex' => ['nullable', new IsValidSex],
             'is_dangerous_animal' => 'required|boolean',
         ];
     }

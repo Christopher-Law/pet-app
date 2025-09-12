@@ -51,6 +51,4 @@ class PetController extends Controller
     {
         return view('pets.show', compact('pet'));
     }
-
-    
 }

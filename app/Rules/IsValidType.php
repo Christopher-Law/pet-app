@@ -2,9 +2,9 @@
 
 namespace App\Rules;
 
+use App\Enums\Type;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
-use App\Enums\Type;
 
 class IsValidType implements ValidationRule
 {
@@ -16,8 +16,8 @@ class IsValidType implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $validValues = array_column(Type::cases(), 'value');
-        
-        if (!in_array($value, $validValues)) {
+
+        if (! in_array($value, $validValues)) {
             $fail('The type must be one of the following: '.implode(', ', $validValues));
         }
     }

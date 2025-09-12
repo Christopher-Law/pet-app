@@ -1,16 +1,14 @@
 <?php
 
 use App\Enums\Breed;
-use App\Enums\Type;
 use App\Rules\IsValidBreed;
 use App\Rules\IsValidSex;
 use App\Rules\IsValidType;
-use Illuminate\Translation\PotentiallyTranslatedString;
 
 describe('Validation Rules', function () {
     describe('IsValidType Rule', function () {
         beforeEach(function () {
-            $this->rule = new IsValidType();
+            $this->rule = new IsValidType;
         });
 
         it('passes validation for valid dog type', function () {
@@ -34,14 +32,14 @@ describe('Validation Rules', function () {
         it('fails validation for invalid type', function () {
             $failCalled = false;
             $failMessage = '';
-            
+
             $fail = function ($message) use (&$failCalled, &$failMessage) {
                 $failCalled = true;
                 $failMessage = $message;
             };
 
             $this->rule->validate('type', 'invalid_type', $fail);
-            
+
             expect($failCalled)->toBeTrue()
                 ->and($failMessage)->toContain('The type must be one of the following:');
         });
@@ -49,7 +47,7 @@ describe('Validation Rules', function () {
 
     describe('IsValidSex Rule', function () {
         beforeEach(function () {
-            $this->rule = new IsValidSex();
+            $this->rule = new IsValidSex;
         });
 
         it('passes validation for male', function () {
@@ -73,14 +71,14 @@ describe('Validation Rules', function () {
         it('fails validation for invalid sex', function () {
             $failCalled = false;
             $failMessage = '';
-            
+
             $fail = function ($message) use (&$failCalled, &$failMessage) {
                 $failCalled = true;
                 $failMessage = $message;
             };
 
             $this->rule->validate('sex', 'other', $fail);
-            
+
             expect($failCalled)->toBeTrue()
                 ->and($failMessage)->toContain('The sex must be one of the following:');
         });
@@ -88,7 +86,7 @@ describe('Validation Rules', function () {
 
     describe('IsValidBreed Rule', function () {
         beforeEach(function () {
-            $this->rule = new IsValidBreed();
+            $this->rule = new IsValidBreed;
         });
 
         it('passes validation for valid dog breed', function () {
@@ -122,17 +120,16 @@ describe('Validation Rules', function () {
         it('fails validation for invalid breed', function () {
             $failCalled = false;
             $failMessage = '';
-            
+
             $fail = function ($message) use (&$failCalled, &$failMessage) {
                 $failCalled = true;
                 $failMessage = $message;
             };
 
             $this->rule->validate('breed', 'invalid_breed', $fail);
-            
+
             expect($failCalled)->toBeTrue()
                 ->and($failMessage)->toContain('The breed must be one of the following:');
         });
     });
 });
-

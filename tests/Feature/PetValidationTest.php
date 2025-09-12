@@ -36,7 +36,7 @@ describe('Pet Request Validation', function () {
                 'breed',
                 'date_of_birth',
                 'sex',
-                'is_dangerous_animal'
+                'is_dangerous_animal',
             ]);
     });
 

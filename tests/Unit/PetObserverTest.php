@@ -1,15 +1,15 @@
 <?php
 
-use App\Observers\PetObserver;
-use App\Models\Pet;
-use App\Events\PetCreated;
-use App\Events\DangerousPetRegistered;
 use App\Enums\Breed;
+use App\Events\DangerousPetRegistered;
+use App\Events\PetCreated;
+use App\Models\Pet;
+use App\Observers\PetObserver;
 use Illuminate\Support\Facades\Event;
 
 describe('PetObserver', function () {
     beforeEach(function () {
-        $this->observer = new PetObserver();
+        $this->observer = new PetObserver;
         Event::fake();
     });
 
@@ -107,7 +107,7 @@ describe('PetObserver', function () {
 
             Event::assertDispatched(PetCreated::class);
             Event::assertDispatched(DangerousPetRegistered::class);
-            
+
             // Verify only one DangerousPetRegistered event is fired (not double)
             Event::assertDispatchedTimes(DangerousPetRegistered::class, 1);
         });

@@ -1,13 +1,13 @@
 <?php
 
 use App\DTOs\PetDTO;
+use App\Enums\Breed;
 use App\Factories\PetFactory;
 use App\Models\Pet;
-use App\Enums\Breed;
 
 describe('PetFactory', function () {
     beforeEach(function () {
-        $this->factory = new PetFactory();
+        $this->factory = new PetFactory;
     });
 
     describe('createFromRequest method', function () {
@@ -45,7 +45,7 @@ describe('PetFactory', function () {
         it('automatically detects mastiff as dangerous breed', function () {
             $data = [
                 'name' => 'Tank',
-                'type' => 'dog', 
+                'type' => 'dog',
                 'breed' => 'Mastiff',
             ];
 
@@ -138,11 +138,11 @@ describe('PetFactory', function () {
                 ->and($pets[0]->name)->toBe('Pet One')
                 ->and($pets[0]->breed)->toBe(Breed::BEAGLE)
                 ->and($pets[0]->is_dangerous_animal)->toBeFalse()
-                
+
                 ->and($pets[1]->name)->toBe('Pet Two')
                 ->and($pets[1]->breed)->toBe(Breed::PERSIAN)
                 ->and($pets[1]->is_dangerous_animal)->toBeFalse()
-                
+
                 ->and($pets[2]->name)->toBe('Dangerous Pet')
                 ->and($pets[2]->breed)->toBe(Breed::PITBULL)
                 ->and($pets[2]->is_dangerous_animal)->toBeTrue(); // Auto-detected
