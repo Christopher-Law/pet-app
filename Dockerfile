@@ -1,4 +1,4 @@
-# Use PHP 8.4 with FPM
+# Use PHP 8.4 with FPM for Laravel 12
 FROM php:8.4-fpm
 
 # Set working directory
@@ -19,9 +19,9 @@ RUN apt-get update && apt-get install -y \
     redis-tools \
     && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions
+# Install PHP extensions required for Laravel
 RUN docker-php-ext-install \
-    pdo_mysql \
+    pdo \
     pdo_sqlite \
     mbstring \
     exif \
@@ -36,15 +36,25 @@ RUN pecl install redis && docker-php-ext-enable redis
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Install Node.js for asset compilation
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
 
 # Copy composer files first for better caching
-COPY composer.json composer.lock /var/www/html/
+COPY composer.json ./
+COPY composer.lock* ./
 
-# Install PHP dependencies (this creates vendor directory)
-RUN composer install --no-dev --optimize-autoloader --no-scripts
+# Install PHP dependencies (including dev for Laravel Pail)
+RUN composer install --optimize-autoloader --no-scripts
+
+# Copy package.json files for Node.js
+COPY package*.json ./
 
 # Copy application files
-COPY . /var/www/html
+COPY . .
+
+# Install Node.js dependencies (including dev dependencies for development)
+RUN npm install
 
 # Run composer scripts now that all files are present
 RUN composer dump-autoload --optimize
@@ -54,18 +64,21 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/storage \
     && chmod -R 755 /var/www/html/bootstrap/cache
 
-# Install Node.js dependencies and build assets
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
-    && apt-get install -y nodejs \
-    && npm install \
-    && npm run build \
-    && rm -rf node_modules
-
-# Create database directory and SQLite database if it doesn't exist
+# Create SQLite database if it doesn't exist
 RUN mkdir -p /var/www/html/database && touch /var/www/html/database/database.sqlite
 
-# Copy Docker environment template
-COPY .env.docker .env
+# Copy environment file
+COPY .env.example .env
+
+# Generate application key
+RUN php artisan key:generate
+
+# Set proper environment for Docker
+RUN sed -i 's/DB_DATABASE=.*/DB_DATABASE=\/var\/www\/html\/database\/database.sqlite/' .env && \
+    sed -i 's/REDIS_HOST=.*/REDIS_HOST=redis/' .env && \
+    sed -i 's/CACHE_STORE=.*/CACHE_STORE=redis/' .env && \
+    sed -i 's/SESSION_DRIVER=.*/SESSION_DRIVER=redis/' .env && \
+    sed -i 's/QUEUE_CONNECTION=.*/QUEUE_CONNECTION=redis/' .env
 
 # Copy entrypoint script
 COPY docker-entrypoint.sh /usr/local/bin/

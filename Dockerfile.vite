@@ -1,0 +1,22 @@
+# Use Node.js for Vite development server
+FROM node:20-alpine
+
+# Set working directory
+WORKDIR /var/www/html
+
+# Copy package.json files
+COPY package*.json ./
+
+# Install Node.js dependencies
+RUN npm install
+
+# Copy application files (only what's needed for Vite)
+COPY resources/ ./resources/
+COPY public/ ./public/
+COPY vite.config.js ./
+
+# Expose Vite port
+EXPOSE 5173
+
+# Start Vite dev server
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
