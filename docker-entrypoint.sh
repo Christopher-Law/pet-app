@@ -1,9 +1,11 @@
 #!/bin/bash
 set -e
 
-# Generate application key
-echo "Generating application key..."
-php artisan key:generate --force
+# Generate application key if not set or is empty
+if ! grep -q "APP_KEY=base64:" .env || grep -q "APP_KEY=$" .env; then
+    echo "Generating application key..."
+    php artisan key:generate --force
+fi
 
 # Wait for Redis to be ready
 echo "Waiting for Redis..."

@@ -11,9 +11,14 @@ A Laravel-based pet registration application demonstrating clean architecture an
 # 1. Clone and start the application
 git clone <repository-url> pet-app
 cd pet-app
+
+# 2. Set up environment file
+cp .env.example .env
+
+# 3. Start the application
 docker-compose up -d --build
 
-# 2. Access the application
+# 4. Access the application
 open http://localhost:8000
 ```
 
@@ -22,9 +27,14 @@ open http://localhost:8000
 # 1. Clone and start the application in development mode
 git clone <repository-url> pet-app
 cd pet-app
+
+# 2. Set up environment file
+cp .env.example .env
+
+# 3. Start the application
 docker-compose -f docker-compose.dev.yml up -d --build
 
-# 2. Access the application
+# 4. Access the application
 open http://localhost:8000
 ```
 
