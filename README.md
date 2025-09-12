@@ -11,13 +11,10 @@ A Laravel-based pet registration application demonstrating clean architecture an
 git clone <repository-url> pet-app
 cd pet-app
 
-# 2. Set up environment file
-cp .env.example .env
-
-# 3. Start the development environment
+# 2. Start the development environment (APP_KEY generated automatically)
 docker-compose up -d --build
 
-# 4. Access the application
+# 3. Access the application
 open http://localhost:8000
 ```
 
@@ -135,7 +132,8 @@ docker-compose up -d --build
 If you see `Unsupported cipher or incorrect key length` errors:
 
 ```bash
-# The APP_KEY will be automatically generated on first run
-# If issues persist, check that .env file exists and is not a directory
-ls -la .env  # Should show a file, not a directory
+# The APP_KEY is automatically generated during Docker build and startup
+# If issues persist, rebuild the containers to regenerate the key
+docker-compose down -v --remove-orphans
+docker-compose up -d --build
 ```
