@@ -2,7 +2,8 @@
 set -e
 
 # Generate application key if not set or is empty
-if ! grep -q "APP_KEY=base64:" .env || grep -q "APP_KEY=$" .env; then
+APP_KEY_VALUE=$(grep "^APP_KEY=" .env | cut -d'=' -f2 | xargs)
+if [ -z "$APP_KEY_VALUE" ] || [ "$APP_KEY_VALUE" = "" ]; then
     echo "Generating application key..."
     php artisan key:generate --force
 fi
