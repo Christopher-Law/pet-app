@@ -65,6 +65,7 @@ open http://localhost:8000
 
 ## 🧪 Testing
 
+### Local Testing
 ```bash
 # Run all tests
 docker-compose exec app php artisan test
@@ -73,6 +74,36 @@ docker-compose exec app php artisan test
 docker-compose exec app php artisan test --testsuite=Unit
 docker-compose exec app php artisan test --testsuite=Feature
 ```
+
+### CI/CD Testing
+The project includes comprehensive GitHub Actions workflows for continuous integration and deployment:
+
+#### 🔄 CI Pipeline (`.github/workflows/ci.yml`)
+- **PHP Testing**: Runs Pest tests with coverage reporting
+- **Code Quality**: Laravel Pint for code style formatting
+- **Docker Build**: Tests Docker image build and functionality
+- **Security Scan**: Composer audit and security checks
+
+#### 🚀 CD Pipeline (`.github/workflows/cd.yml`)
+- **Container Registry**: Builds and pushes Docker images to GitHub Container Registry
+- **Staging Deployment**: Automatic deployment to staging on main branch pushes
+- **Production Release**: Creates GitHub releases and deploys to production on version tags
+- **Multi-architecture Support**: Supports multiple Docker architectures
+
+#### 🐳 Docker Testing (`.github/workflows/docker-test.yml`)
+- **Container Testing**: Full Docker Compose environment testing
+- **Service Integration**: Tests Redis, Nginx, and PHP-FPM integration
+- **Security Scanning**: Trivy vulnerability scanning for Docker images
+- **Endpoint Testing**: Validates application endpoints and functionality
+
+#### 📊 Workflow Triggers
+- **CI**: Runs on push/PR to `main` and `develop` branches
+- **CD**: Runs on push to `main` branch and version tags (`v*`)
+- **Docker Tests**: Runs on push/PR to `main` and `develop` branches
+
+#### 🔧 Additional CI/CD Features
+- **Dependabot**: Automated dependency updates for Composer, npm, and GitHub Actions
+- **Security Scanning**: Trivy vulnerability scanning for Docker images
 
 ## 🔧 Development Commands
 
