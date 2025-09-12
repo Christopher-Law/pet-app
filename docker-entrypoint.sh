@@ -1,9 +1,14 @@
 #!/bin/bash
 set -e
 
-# Generate application key if not set
-if [ -z "$APP_KEY" ]; then
+# Generate application key if not set in .env file
+if ! grep -q "^APP_KEY=base64:" .env 2>/dev/null; then
     echo "Generating application key..."
+    # Add APP_KEY line if it doesn't exist
+    if ! grep -q "^APP_KEY=" .env 2>/dev/null; then
+        echo "" >> .env
+        echo "APP_KEY=" >> .env
+    fi
     php artisan key:generate --force
 fi
 
@@ -22,7 +27,12 @@ php artisan migrate --force
 # Clear and cache config
 php artisan config:cache
 php artisan route:cache
-php artisan view:cache
+
+# Only cache views in production
+if [ "$APP_ENV" = "production" ]; then
+    echo "Caching views for production..."
+    php artisan view:cache
+fi
 
 # Start PHP-FPM
 echo "Starting PHP-FPM..."
