@@ -11,7 +11,7 @@ A Laravel-based pet registration application demonstrating clean architecture an
 git clone <repository-url> pet-app
 cd pet-app
 
-# 2. Start the development environment (APP_KEY generated automatically)
+# 2. Start the development environment 
 docker-compose up -d --build
 
 # 3. Access the application
