@@ -61,11 +61,11 @@ RUN touch /var/www/html/database/database.sqlite
 COPY .env.docker .env
 
 # Copy entrypoint script
-COPY docker-entrypoint.dev.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint.dev.sh
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # Expose port 9000 for PHP-FPM
 EXPOSE 9000
 
 # Use entrypoint script
-ENTRYPOINT ["docker-entrypoint.dev.sh"]
+ENTRYPOINT ["docker-entrypoint.sh"]

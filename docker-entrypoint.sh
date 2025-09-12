@@ -1,14 +1,15 @@
 #!/bin/bash
 set -e
 
-# Generate application key if not set in .env file
-if ! grep -q "^APP_KEY=base64:" .env 2>/dev/null; then
+# Generate application key if not set or corrupted in .env file
+EXISTING_KEY=$(grep "^APP_KEY=" .env 2>/dev/null | cut -d'=' -f2- || echo "")
+if [[ -z "$EXISTING_KEY" ]] || [[ ! "$EXISTING_KEY" =~ ^base64:[A-Za-z0-9+/]{44}=?$ ]]; then
     echo "Generating application key..."
-    # Add APP_KEY line if it doesn't exist
-    if ! grep -q "^APP_KEY=" .env 2>/dev/null; then
-        echo "" >> .env
-        echo "APP_KEY=" >> .env
-    fi
+    # Remove any existing APP_KEY line and add clean one
+    grep -v "^APP_KEY=" .env > .env.tmp 2>/dev/null || cp .env .env.tmp
+    echo "" >> .env.tmp
+    echo "APP_KEY=" >> .env.tmp
+    mv .env.tmp .env
     php artisan key:generate --force
 fi
 
