@@ -58,7 +58,7 @@ describe('ValidationStrategy', function () {
 
             expect($rules)->toBeArray()
                 ->and($rules['name'])->toBe('required|string|max:255')
-                ->and($rules['type'])->toContain('nullable'); // Type is optional for default
+                ->and($rules['type'])->toContain('required'); // Type is required for default
         });
     });
 
@@ -131,10 +131,10 @@ describe('ValidationStrategy', function () {
             $this->strategy = new DefaultValidationStrategy;
         });
 
-        it('makes type field nullable', function () {
+        it('makes type field required', function () {
             $rules = $this->strategy->getRules();
 
-            expect($rules['type'])->toContain('nullable');
+            expect($rules['type'])->toContain('required');
         });
 
         it('still requires name and dangerous animal flag', function () {
@@ -156,7 +156,7 @@ describe('ValidationStrategy', function () {
                 'is_dangerous_animal',
             ]);
 
-            // Most fields should be nullable except name and is_dangerous_animal
+            // Most fields should be nullable except name, type, and is_dangerous_animal
             expect($rules['breed'])->toContain('nullable')
                 ->and($rules['date_of_birth'])->toContain('nullable')
                 ->and($rules['sex'])->toContain('nullable');
@@ -167,6 +167,7 @@ describe('ValidationStrategy', function () {
 
             expect($messages)->toBeArray()
                 ->and($messages['name.required'])->toBe('Pet name is required.')
+                ->and($messages['type.required'])->toBe('Pet type is required.')
                 ->and($messages['is_dangerous_animal.required'])->toBe('Please specify if this pet requires special handling.');
         });
     });
