@@ -39,15 +39,15 @@ enum Breed: string
     public static function getDogBreeds(): array
     {
         return [
-            self::PITBULL,
-            self::MASTIFF,
+            self::BEAGLE,
+            self::BULLDOG,
             self::GERMAN_SHEPHERD,
             self::GOLDEN_RETRIEVER,
             self::LABRADOR_RETRIEVER,
-            self::BULLDOG,
-            self::ROTTWEILER,
-            self::BEAGLE,
+            self::MASTIFF,
+            self::PITBULL,
             self::POODLE,
+            self::ROTTWEILER,
             self::SIBERIAN_HUSKY,
         ];
     }
@@ -55,16 +55,16 @@ enum Breed: string
     public static function getCatBreeds(): array
     {
         return [
-            self::PERSIAN,
-            self::MAINE_COON,
-            self::BRITISH_SHORTHAIR,
-            self::RAGDOLL,
-            self::SIAMESE,
-            self::AMERICAN_SHORTHAIR,
             self::ABYSSINIAN,
+            self::AMERICAN_SHORTHAIR,
+            self::BENGAL,
+            self::BRITISH_SHORTHAIR,
+            self::MAINE_COON,
+            self::PERSIAN,
+            self::RAGDOLL,
             self::RUSSIAN_BLUE,
             self::SCOTTISH_FOLD,
-            self::BENGAL,
+            self::SIAMESE,
         ];
     }
 
