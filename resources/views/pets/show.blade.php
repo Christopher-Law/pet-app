@@ -8,7 +8,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h1 class="text-2xl sm:text-3xl font-bold">{{ $pet->name }}</h1>
-                    <p class="text-gray-300">{{ ucfirst($pet->type) }} Profile</p>
+                    <p class="text-gray-300">{{ $pet->type ? ucfirst($pet->type) : 'Pet' }} Profile</p>
                 </div>
                 @if($pet->is_dangerous_animal)
                     <div class="bg-red-500 text-white px-4 py-2 rounded-full flex items-center space-x-2">
@@ -37,7 +37,7 @@
                         
                         <div>
                             <label class="block text-sm font-medium text-gray-500">Type</label>
-                            <p class="mt-1 text-lg text-gray-900 capitalize">{{ $pet->type }}</p>
+                            <p class="mt-1 text-lg text-gray-900 capitalize">{{ $pet->type ?? 'Not specified' }}</p>
                         </div>
                         
                         <div>

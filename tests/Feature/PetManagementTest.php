@@ -120,9 +120,10 @@ describe('Pet Management', function () {
                 ->and($pet->sex)->toBe('female');
         });
 
-        it('can create pet without optional fields', function () {
+        it('can create pet with only required fields', function () {
             $petData = [
                 'name' => 'Simple Pet',
+                'type' => 'dog',
                 'is_dangerous_animal' => false,
             ];
 
@@ -132,7 +133,7 @@ describe('Pet Management', function () {
 
             $pet = Pet::where('name', 'Simple Pet')->first();
             expect($pet)->not->toBeNull()
-                ->and($pet->type)->toBeNull()
+                ->and($pet->type)->toBe('dog')
                 ->and($pet->breed)->toBeNull()
                 ->and($pet->date_of_birth)->toBeNull()
                 ->and($pet->sex)->toBeNull();

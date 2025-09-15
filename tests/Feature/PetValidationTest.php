@@ -43,10 +43,22 @@ describe('Pet Request Validation', function () {
     it('accepts minimal valid data', function () {
         $minimalData = [
             'name' => 'Minimal Pet',
+            'type' => Type::DOG->value,
             'is_dangerous_animal' => false,
         ];
 
         $response = $this->withoutMiddleware()->post('/pets', $minimalData);
         $response->assertStatus(302); // Should redirect successfully
+    });
+
+    it('requires pet type field', function () {
+        $dataWithoutType = [
+            'name' => 'Pet Without Type',
+            'is_dangerous_animal' => false,
+        ];
+
+        $response = $this->withoutMiddleware()->post('/pets', $dataWithoutType);
+        $response->assertStatus(302)
+            ->assertSessionHasErrors(['type']);
     });
 });

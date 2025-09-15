@@ -16,12 +16,11 @@
             <!-- Pet's Name -->
             <div>
                 <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Pet's Name *</label>
-                <input type="text" 
-                       id="name" 
-                       name="name" 
+                <input type="text"
+                       id="name"
+                       name="name"
                        value="{{ old('name') }}"
-                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                       required>
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 @error('name')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
@@ -32,17 +31,17 @@
                 <label class="block text-sm font-medium text-gray-700 mb-2">Pet Type *</label>
                 <div class="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-4">
                     <label class="flex items-center">
-                        <input type="radio" 
-                               name="type" 
-                               value="dog" 
+                        <input type="radio"
+                               name="type"
+                               value="dog"
                                x-model="formData.type"
                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
                         <span class="ml-2 text-sm font-medium text-gray-900">Dog</span>
                     </label>
                     <label class="flex items-center">
-                        <input type="radio" 
-                               name="type" 
-                               value="cat" 
+                        <input type="radio"
+                               name="type"
+                               value="cat"
                                x-model="formData.type"
                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
                         <span class="ml-2 text-sm font-medium text-gray-900">Cat</span>
